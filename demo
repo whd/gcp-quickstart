@@ -1,0 +1,25 @@
+#!/bin/bash
+
+input () { echo ; echo "${1}... (RET to continue)" && read ; }
+export -f input
+
+export SHARED_PROJECT=moz-fx-data-shar-nonprod-efed
+export COMPUTE_INSTANCE_NAME=instance-1
+export BUCKET=gs://$PROJECT
+export PUBSUB_SUBSCRIPTION=telemetry-decoded.demo-subscription
+export COMPUTE_SERVICE_ACCOUNT=demo-service-account
+export DATAFLOW_SERVICE_ACCOUNT=dataflow-service-account
+export DATAFLOW_PUBSUB_SUBSCRIPTION=structured-decoded.demo-sink
+export ZONE=us-west1-a
+export PROJECT="${PROJECT:-$USER-sandbox-demo}"
+echo "Project ID is ${PROJECT}"
+[[ $(gcloud config get-value project 2>/dev/null) == "$PROJECT" ]] || gcloud config set project $PROJECT
+
+SCRIPT="./${1}.sh"
+if [[ -z "$1" ]] || ! [[ -f "$SCRIPT" ]] ; then
+  echo "usage: ${0} ACTION"
+  echo "See README.md for details"
+  exit 1
+fi
+
+$SCRIPT
