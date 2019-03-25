@@ -1,6 +1,8 @@
 #!/bin/bash
 
-input () { echo ; echo "${1}... (RET to continue)" && read ; }
+input () {
+  echo ; set +x ; echo "${1}... (RET to continue)" && read ; set -x
+}
 export -f input
 
 export SHARED_PROJECT=moz-fx-data-shar-nonprod-efed
